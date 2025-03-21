@@ -112,3 +112,49 @@
 .focus-mode img, .focus-mode video, .focus-mode audio {
     display: none;
 }
+
+/* Estilos para móviles */
+@media (max-width: 768px) {
+    /* Ajustar el tamaño del menú */
+    #widget-menu {
+        width: 90%; /* Reducir el ancho del menú */
+        max-height: 60vh; /* Reducir la altura máxima */
+        bottom: 10px; /* Ajustar la posición */
+        right: 10px; /* Ajustar la posición */
+    }
+
+    /* Ajustar el tamaño del botón de accesibilidad */
+    #accessibility-widget button {
+        width: 50px; /* Reducir el tamaño del botón */
+        height: 50px; /* Reducir el tamaño del botón */
+    }
+
+    /* Ajustar el tamaño del ícono del botón de accesibilidad */
+    #accessibility-widget button i {
+        font-size: 24px; /* Reducir el tamaño del ícono */
+    }
+
+    /* Ajustar el tamaño de los botones dentro del menú */
+    .category-options button {
+        width: 100%; /* Ocupar todo el ancho en móviles */
+        margin: 5px 0; /* Espaciado vertical entre botones */
+        padding: 8px; /* Reducir el padding de los botones */
+        font-size: 12px; /* Reducir el tamaño de la fuente */
+    }
+
+    /* Ajustar el tamaño de los íconos dentro de los botones */
+    .category-options button i {
+        font-size: 16px; /* Reducir el tamaño del ícono */
+    }
+
+    /* Ajustar el tamaño de los encabezados de las categorías */
+    .category-header {
+        padding: 8px; /* Reducir el padding de los encabezados */
+        font-size: 14px; /* Reducir el tamaño de la fuente */
+    }
+
+    /* Ajustar el tamaño de los íconos dentro de los encabezados */
+    .category-header i {
+        font-size: 18px; /* Reducir el tamaño del ícono */
+    }
+}
