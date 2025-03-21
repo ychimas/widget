@@ -1,0 +1,114 @@
+/* Estilos para el menú del widget */
+#widget-menu {
+    max-height: 80vh;
+    overflow-y: auto;
+    background-color: #FFFFFF;
+    border: 1px solid #DDD;
+    border-radius: 5px;
+    padding: 0; /* Eliminar el padding para que el encabezado ocupe todo el ancho */
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    bottom: 70px;
+    right: 20px;
+    z-index: 1001;
+    width: 400px;
+}
+
+/* Estilos para el encabezado del menú */
+#widget-menu > div:first-child {
+    background-color: #007BFF;
+    color: #FFFFFF;
+    padding: 10px;
+    border-radius: 5px 5px 0 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+/* Estilos para los encabezados de las categorías */
+.category-header {
+    padding: 10px;
+    background-color: #F5F5F5;
+    border-bottom: 1px solid #DDD;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    border-radius: 5px;
+    margin: 5px;
+}
+
+.category-header:hover {
+    background-color: #E0E0E0;
+}
+
+/* Estilos para las opciones de las categorías */
+.category-options {
+    padding: 10px;
+    display: none;
+    flex-wrap: wrap;
+}
+
+.category-options button {
+    display: inline-block;
+    width: 48%;
+    margin: 1%;
+    padding: 10px;
+    cursor: pointer;
+    text-align: center;
+    border: 1px solid #DDD;
+    border-radius: 5px;
+    background-color: #FFF;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.category-options button:hover {
+    background-color: #F5F5F5;
+}
+
+/* Estilos para el cursor grande */
+.big-cursor {
+    cursor: url('../assetsWidget/img/big-cursor.png'), auto;
+}
+
+/* Estilos para la accesibilidad visual */
+.high-contrast {
+    background-color: #000 !important;
+    color: #FFF !important;
+}
+
+.low-contrast {
+    opacity: 0.8;
+}
+
+.negative {
+    filter: invert(100%);
+}
+
+.grayscale {
+    filter: grayscale(100%);
+}
+
+.legible-font {
+    font-family: 'Arial', sans-serif;
+}
+
+.desaturated {
+    filter: saturate(0.5);
+}
+
+.no-animations * {
+    animation: none !important;
+    transition: none !important;
+}
+
+.focus-mode {
+    background-color: #FFF !important;
+    color: #000 !important;
+}
+
+.focus-mode img, .focus-mode video, .focus-mode audio {
+    display: none;
+}

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Widget de Accesibilidad</title>
+    
+    <!-- Enlace a Font Awesome (CDN) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Estilos del widget -->
+    <link rel="stylesheet" href="assetsWidget/css/widget.css">
+    
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+        }
+        .icon-container {
+            margin-top: 20px;
+            font-size: 24px;
+        }
+        .icon-container i {
+            margin: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Bienvenido al Widget de Accesibilidad</h1>
+    <p>Este es un ejemplo de integración de un widget de accesibilidad personalizado.</p>
+
+    <!-- Botón con icono de accesibilidad -->
+    <a href="https://www.google.com" target="_blank">
+        <i class="fa-solid fa-globe"></i> Ir a Google
+    </a>
+
+    <!-- Contenedor con iconos de accesibilidad -->
+    <div class="icon-container">
+        <i class="fa-solid fa-universal-access"></i> Universal Access
+        <i class="fa-solid fa-low-vision"></i> Baja Visión
+        <i class="fa-solid fa-wheelchair"></i> Movilidad
+        <i class="fa-solid fa-font"></i> Ajuste de Texto
+    </div>
+
+    <!-- Script del Widget -->
+    <script src="assetsWidget/js/widget.js"></script>
+
+</body>
+</html>
