@@ -5,7 +5,7 @@
     background-color: #FFFFFF;
     border: 1px solid #DDD;
     border-radius: 5px;
-    padding: 0; /* Eliminar el padding para que el encabezado ocupe todo el ancho */
+    padding: 0;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
     position: fixed;
     bottom: 70px;
@@ -61,16 +61,71 @@
     border-radius: 5px;
     background-color: #FFF;
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-    transition: background-color 0.2s ease, transform 0.2s ease;
+    transition: all 0.2s ease;
 }
 
 .category-options button:hover {
     background-color: #F5F5F5;
+    transform: translateY(-2px);
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
 }
 
-/* Estilos para el cursor grande */
-.big-cursor {
-    cursor: url('../assetsWidget/img/big-cursor.png'), auto;
+/* Estilos para botones seleccionados */
+.category-options button.selected {
+    background-color: #007BFF !important;
+    color: white !important;
+    border-color: #007BFF !important;
+}
+
+.category-options button.selected i {
+    color: white !important;
+}
+
+/* Estilos para los botones de control */
+.control-buttons {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 10px;
+    margin: 10px 0;
+}
+
+.control-buttons button {
+    background-color: transparent;
+    border: none;
+    color: #007BFF;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 5px;
+    transition: all 0.2s ease;
+}
+
+.control-buttons button:hover {
+    color: #0056b3;
+    transform: scale(1.1);
+}
+
+/* Estilo para el cursor personalizado */
+#custom-cursor {
+    width: 40px;
+    height: 40px;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+}
+
+/* Estilo para enlaces resaltados */
+.highlighted-link {
+    background-color: #FFFF00 !important;
+    padding: 2px !important;
+    border-radius: 3px !important;
+}
+
+/* Estilo para encabezados resaltados */
+.highlighted-heading {
+    background-color: #FFFF00 !important;
+    padding: 5px !important;
+    border-radius: 5px !important;
 }
 
 /* Estilos para la accesibilidad visual */
@@ -113,48 +168,85 @@
     display: none;
 }
 
-/* Estilos para móviles */
+/* ESTILOS PARA MÓVIL (max-width: 768px) */
 @media (max-width: 768px) {
-    /* Ajustar el tamaño del menú */
     #widget-menu {
-        width: 90%; /* Reducir el ancho del menú */
-        max-height: 60vh; /* Reducir la altura máxima */
-        bottom: 10px; /* Ajustar la posición */
-        right: 10px; /* Ajustar la posición */
+        width: 90%;
+        right: 5%;
+        left: auto;
+        bottom: 10px;
+        max-height: 70vh;
+        width: 85% !important;
     }
-
-    /* Ajustar el tamaño del botón de accesibilidad */
-    #accessibility-widget button {
-        width: 50px; /* Reducir el tamaño del botón */
-        height: 50px; /* Reducir el tamaño del botón */
+    
+    .category-options {
+        justify-content: space-between;
+        padding: 5px;
     }
-
-    /* Ajustar el tamaño del ícono del botón de accesibilidad */
-    #accessibility-widget button i {
-        font-size: 24px; /* Reducir el tamaño del ícono */
-    }
-
-    /* Ajustar el tamaño de los botones dentro del menú */
+    
     .category-options button {
-        width: 100%; /* Ocupar todo el ancho en móviles */
-        margin: 5px 0; /* Espaciado vertical entre botones */
-        padding: 8px; /* Reducir el padding de los botones */
-        font-size: 12px; /* Reducir el tamaño de la fuente */
+        width: 48% !important; /* Más estrecho que el 48% original */
+        margin: 2%;
+        padding: 6px 3px;
+        font-size: 11px;
     }
-
-    /* Ajustar el tamaño de los íconos dentro de los botones */
+    
     .category-options button i {
-        font-size: 16px; /* Reducir el tamaño del ícono */
+        font-size: 16px;
+        margin-bottom: 2px;
     }
-
-    /* Ajustar el tamaño de los encabezados de las categorías */
+    
+    #accessibility-widget button {
+        width: 50px;
+        padding: 12px;
+    }
+    
+    #accessibility-widget button i {
+        font-size: 26px;
+    }
+    
     .category-header {
-        padding: 8px; /* Reducir el padding de los encabezados */
-        font-size: 14px; /* Reducir el tamaño de la fuente */
+        padding: 8px 6px;
+        font-size: 14px;
     }
+    
+    .menu-header span {
+        font-size: 14px;
+    }
+    
+    .control-buttons {
+        padding: 0 5px;
+        margin: 8px 0;
+    }
+    
+    .widgetMenu {
+        bottom: 60px;
+    }
+}
 
-    /* Ajustar el tamaño de los íconos dentro de los encabezados */
-    .category-header i {
-        font-size: 18px; /* Reducir el tamaño del ícono */
+/* Ajustes adicionales para pantallas muy pequeñas */
+@media (max-width: 480px) {
+    .category-options button {
+        font-size: 10px;
+        padding: 5px 2px;
+    }
+    
+    .category-options button i {
+        font-size: 14px;
+    }
+    
+    .menu-header span,
+    .category-header span {
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 360px) {
+    .category-options button {
+        font-size: 9px;
+    }
+    
+    .category-header {
+        padding: 6px 4px;
     }
 }
