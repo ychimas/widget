@@ -3,40 +3,40 @@
     max-height: 80vh;
     overflow-y: auto;
     background-color: #FFFFFF;
-    border: 1px solid #DDD;
-    border-radius: 5px;
+    border: 0.0625rem solid #DDD;
+    border-radius: 0.3125rem;
     padding: 0;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 0.625rem rgba(0, 0, 0, 0.1);
     position: fixed;
-    bottom: 70px;
-    right: 20px;
+    bottom: 10vh;
+    right: 5vw;
     z-index: 1001;
-    width: 400px;
+    width: 25rem;
 }
 
 /* Estilos para el encabezado del menú */
 #widget-menu > div:first-child {
     background-color: #007BFF;
     color: #FFFFFF;
-    padding: 10px;
-    border-radius: 5px 5px 0 0;
+    padding: 0.625rem;
+    border-radius: 0.3125rem 0.3125rem 0 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 16px;
+    font-size: 1rem;
     font-weight: bold;
 }
 
 /* Estilos para los encabezados de las categorías */
 .category-header {
-    padding: 10px;
+    padding: 0.625rem;
     background-color: #F5F5F5;
-    border-bottom: 1px solid #DDD;
+    border-bottom: 0.0625rem solid #DDD;
     cursor: pointer;
     display: flex;
     align-items: center;
-    border-radius: 5px;
-    margin: 5px;
+    border-radius: 0.3125rem;
+    margin: 0.3125rem;
 }
 
 .category-header:hover {
@@ -45,7 +45,7 @@
 
 /* Estilos para las opciones de las categorías */
 .category-options {
-    padding: 10px;
+    padding: 0.625rem;
     display: none;
     flex-wrap: wrap;
 }
@@ -54,20 +54,23 @@
     display: inline-block;
     width: 48%;
     margin: 1%;
-    padding: 10px;
+    padding: 0.625rem;
     cursor: pointer;
     text-align: center;
-    border: 1px solid #DDD;
-    border-radius: 5px;
+    border: 0.0625rem solid #DDD;
+    border-radius: 0.3125rem;
     background-color: #FFF;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0.125rem 0.3125rem rgba(0, 0, 0, 0.1);
     transition: all 0.2s ease;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .category-options button:hover {
     background-color: #F5F5F5;
-    transform: translateY(-2px);
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
+    transform: translateY(-0.125rem);
+    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.15);
 }
 
 /* Estilos para botones seleccionados */
@@ -77,7 +80,8 @@
     border-color: #007BFF !important;
 }
 
-.category-options button.selected i {
+.category-options button.selected i,
+.category-options button.selected span {
     color: white !important;
 }
 
@@ -85,18 +89,18 @@
 .control-buttons {
     display: flex;
     justify-content: space-between;
-    padding: 0 10px;
-    margin: 10px 0;
+    padding: 0 0.625rem;
+    margin: 0.625rem 0;
 }
 
 .control-buttons button {
     background-color: transparent;
     border: none;
     color: #007BFF;
-    font-size: 16px;
+    font-size: 1rem;
     cursor: pointer;
-    padding: 8px;
-    border-radius: 5px;
+    padding: 0.5rem;
+    border-radius: 0.3125rem;
     transition: all 0.2s ease;
 }
 
@@ -107,8 +111,8 @@
 
 /* Estilo para el cursor personalizado */
 #custom-cursor {
-    width: 40px;
-    height: 40px;
+    width: 2.5rem;
+    height: 2.5rem;
     position: fixed;
     pointer-events: none;
     z-index: 9999;
@@ -117,15 +121,15 @@
 /* Estilo para enlaces resaltados */
 .highlighted-link {
     background-color: #FFFF00 !important;
-    padding: 2px !important;
-    border-radius: 3px !important;
+    padding: 0.125rem !important;
+    border-radius: 0.1875rem !important;
 }
 
 /* Estilo para encabezados resaltados */
 .highlighted-heading {
     background-color: #FFFF00 !important;
-    padding: 5px !important;
-    border-radius: 5px !important;
+    padding: 0.3125rem !important;
+    border-radius: 0.3125rem !important;
 }
 
 /* Estilos para la accesibilidad visual */
@@ -168,85 +172,93 @@
     display: none;
 }
 
-/* ESTILOS PARA MÓVIL (max-width: 768px) */
-@media (max-width: 768px) {
+/* ESTILOS PARA MÓVIL (max-width: 48rem) */
+@media (max-width: 48rem) {
     #widget-menu {
         width: 90%;
         right: 5%;
         left: auto;
-        bottom: 10px;
+        bottom: 5vh;
         max-height: 70vh;
         width: 85% !important;
     }
     
     .category-options {
         justify-content: space-between;
-        padding: 5px;
+        padding: 0.3125rem;
     }
     
     .category-options button {
-        width: 48% !important; /* Más estrecho que el 48% original */
+        width: 48% !important;
         margin: 2%;
-        padding: 6px 3px;
-        font-size: 11px;
+        padding: 0.375rem 0.1875rem;
+        font-size: 0.6875rem;
     }
     
     .category-options button i {
-        font-size: 16px;
-        margin-bottom: 2px;
+        font-size: 1rem;
+        margin-bottom: 0.125rem;
     }
     
     #accessibility-widget button {
-        width: 50px;
-        padding: 12px;
+        width: 3.125rem;
+        padding: 0.75rem;
     }
     
     #accessibility-widget button i {
-        font-size: 26px;
+        font-size: 1.625rem;
     }
     
     .category-header {
-        padding: 8px 6px;
-        font-size: 14px;
+        padding: 0.5rem 0.375rem;
+        font-size: 0.875rem;
     }
     
     .menu-header span {
-        font-size: 14px;
+        font-size: 0.875rem;
     }
     
     .control-buttons {
-        padding: 0 5px;
-        margin: 8px 0;
+        padding: 0 0.3125rem;
+        margin: 0.5rem 0;
     }
     
     .widgetMenu {
-        bottom: 60px;
+        bottom: 3.75rem;
     }
 }
 
 /* Ajustes adicionales para pantallas muy pequeñas */
-@media (max-width: 480px) {
+@media (max-width: 30rem) {
     .category-options button {
-        font-size: 10px;
-        padding: 5px 2px;
+        font-size: 0.625rem;
+        padding: 0.3125rem 0.125rem;
     }
     
     .category-options button i {
-        font-size: 14px;
+        font-size: 0.875rem;
     }
     
     .menu-header span,
     .category-header span {
-        font-size: 13px;
+        font-size: 0.8125rem;
     }
 }
 
-@media (max-width: 360px) {
+@media (max-width: 22.5rem) {
     .category-options button {
-        font-size: 9px;
+        font-size: 0.5625rem;
     }
     
     .category-header {
-        padding: 6px 4px;
+        padding: 0.375rem 0.25rem;
     }
+}
+
+/* Fuentes para dislexia */
+@font-face {
+    font-family: 'OpenDyslexic';
+    src: url('assetsWidget/OpenDyslexic-Regular.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
 }

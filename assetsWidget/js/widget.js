@@ -25,6 +25,19 @@
     var isKeyboardNavOn = false;
     var isVoiceNavOn = false;
 
+    // Variable para almacenar el estado de los medios
+    var mediaElementsState = [];
+
+    // Elementos protegidos de los filtros visuales
+    const protectedElements = [
+        '#accessibility-widget',
+        '#accessibility-widget *',
+        '.bntNextPrev-container',
+        '.bntNextPrev-container *',
+        '.headerOpc',
+        '.headerOpc *'
+    ];
+
     // Crear el contenedor del widget
     var widgetContainer = document.createElement('div');
     widgetContainer.id = 'accessibility-widget';
@@ -86,7 +99,7 @@
 
     // Añadir título al encabezado
     var headerTitle = document.createElement('span');
-    headerTitle.innerText = 'Herramientas de Accesibilidad de Sofactia';
+    headerTitle.innerText = 'Accesibilidad de Sofactia';
     headerTitle.style.fontSize = '16px';
     headerTitle.style.fontWeight = 'bold';
 
@@ -395,7 +408,7 @@
             text.style.color = '#333';
             button.appendChild(text);
 
-            // Añadir evento click (MODIFICACIÓN PRINCIPAL)
+            // Añadir evento click
             button.addEventListener('click', function() {
                 // Para botones toggle, alternar estado
                 if (option.isToggle) {
@@ -504,30 +517,46 @@
             }
         });
         
+        // Siempre seleccionar el botón de aumentar
         increaseButton.classList.add('selected');
-        decreaseButton.classList.remove('selected');
+        
+        // Deseleccionar el de disminuir si estamos por encima del tamaño original
+        if (currentFontSizeMultiplier > 1) {
+            decreaseButton.classList.remove('selected');
+        }
+        
+        // Si volvemos al tamaño original, deseleccionar ambos
+        if (currentFontSizeMultiplier === 1) {
+            increaseButton.classList.remove('selected');
+            decreaseButton.classList.remove('selected');
+        }
     }
-
+    
     function decreaseTextSize() {
-        if (fontSizeSteps > 0) {
-            storeOriginalFontSizes();
-            currentFontSizeMultiplier = Math.max(1, currentFontSizeMultiplier - 0.1);
-            fontSizeSteps--;
-            
-            var elements = document.querySelectorAll('body *:not(#accessibility-widget, #accessibility-widget *)');
-            elements.forEach(function(element) {
-                var originalSize = originalFontSizes.get(element);
-                if (originalSize) {
-                    element.style.fontSize = (originalSize * currentFontSizeMultiplier) + 'px';
-                }
-            });
-            
-            decreaseButton.classList.add('selected');
-            
-            if (fontSizeSteps === 0) {
-                increaseButton.classList.remove('selected');
-                decreaseButton.classList.remove('selected');
+        storeOriginalFontSizes();
+        currentFontSizeMultiplier = Math.max(0.5, currentFontSizeMultiplier - 0.1);
+        fontSizeSteps--;
+        
+        var elements = document.querySelectorAll('body *:not(#accessibility-widget, #accessibility-widget *)');
+        elements.forEach(function(element) {
+            var originalSize = originalFontSizes.get(element);
+            if (originalSize) {
+                element.style.fontSize = (originalSize * currentFontSizeMultiplier) + 'px';
             }
+        });
+        
+        // Siempre seleccionar el botón de disminuir
+        decreaseButton.classList.add('selected');
+        
+        // Deseleccionar el de aumentar si estamos por debajo del tamaño original
+        if (currentFontSizeMultiplier < 1) {
+            increaseButton.classList.remove('selected');
+        }
+        
+        // Si volvemos al tamaño original, deseleccionar ambos
+        if (currentFontSizeMultiplier === 1) {
+            increaseButton.classList.remove('selected');
+            decreaseButton.classList.remove('selected');
         }
     }
 
@@ -539,9 +568,13 @@
         });
     }
 
+    // Función mejorada para pausar/reproducir animaciones y medios
+    // Función mejorada para pausar/reproducir animaciones, medios e iframes
     function toggleAnimations() {
         animationsPaused = !animationsPaused;
         var animations = document.querySelectorAll('body *:not(#accessibility-widget, #accessibility-widget *)');
+        
+        // Pausar/reproducir animaciones CSS
         animations.forEach(function(element) {
             if (animationsPaused) {
                 element.style.animationPlayState = 'paused';
@@ -552,34 +585,93 @@
             }
         });
 
-        var videos = document.querySelectorAll('video, audio');
-        videos.forEach(function(video) {
-            if (animationsPaused) {
-                video.pause();
-            } else {
-                video.play();
-            }
-        });
+        // Manejar elementos multimedia (audio/video)
+        var mediaElements = document.querySelectorAll('video, audio');
+        
+        // Manejar iframes (videos embebidos, etc.)
+        var iframes = document.querySelectorAll('iframe');
+        
+        if (animationsPaused) {
+            // Al pausar, guardar el estado actual de los medios e iframes
+            mediaElementsState = [];
+            
+            // Manejar elementos multimedia
+            mediaElements.forEach(function(media) {
+                mediaElementsState.push({
+                    element: media,
+                    type: 'media',
+                    wasPlaying: !media.paused,
+                    currentTime: media.currentTime
+                });
+                
+                if (!media.paused) {
+                    media.pause();
+                }
+            });
+            
+            // Manejar iframes
+            iframes.forEach(function(iframe) {
+                try {
+                    // Solo para iframes que tienen contenido que puede ser pausado (como videos de YouTube)
+                    if (iframe.contentWindow) {
+                        mediaElementsState.push({
+                            element: iframe,
+                            type: 'iframe',
+                            src: iframe.src
+                        });
+                        
+                        // Reemplazar el iframe con una imagen estática o simplemente cambiar el src
+                        var originalSrc = iframe.src;
+                        iframe.dataset.originalSrc = originalSrc;
+                        iframe.src = ''; // Pausar el contenido del iframe
+                    }
+                } catch (e) {
+                    console.log('No se pudo pausar el iframe:', e);
+                }
+            });
+        } else {
+            // Al reanudar, restaurar el estado de los medios e iframes
+            mediaElementsState.forEach(function(mediaState) {
+                if (mediaState.type === 'media' && mediaState.wasPlaying) {
+                    mediaState.element.currentTime = mediaState.currentTime;
+                    mediaState.element.play().catch(e => console.log('No se pudo reproducir automáticamente:', e));
+                } else if (mediaState.type === 'iframe') {
+                    // Restaurar el iframe original
+                    mediaState.element.src = mediaState.element.dataset.originalSrc || mediaState.src;
+                }
+            });
+            mediaElementsState = [];
+        }
 
         // Actualizar el texto y el ícono del botón
         var animationButton = document.querySelector('.fa-pause, .fa-play').parentElement;
-        if (animationsPaused) {
-            animationButton.querySelector('span').innerText = 'Reproducir Animaciones';
-            animationButton.querySelector('.fa-pause').className = 'fas fa-play';
-        } else {
-            animationButton.querySelector('span').innerText = 'Detener Animaciones';
-            animationButton.querySelector('.fa-play').className = 'fas fa-pause';
+        if (animationButton) {
+            if (animationsPaused) {
+                animationButton.querySelector('span').innerText = 'Reproducir Animaciones';
+                animationButton.querySelector('.fa-pause').className = 'fas fa-play';
+            } else {
+                animationButton.querySelector('span').innerText = 'Detener Animaciones';
+                animationButton.querySelector('.fa-play').className = 'fas fa-pause';
+            }
         }
     }
 
+    // Función modificada para saturación (protege elementos específicos)
     function toggleSaturation() {
         isSaturationOn = !isSaturationOn;
-        var elements = document.querySelectorAll('body *:not(#accessibility-widget, #accessibility-widget *)');
+        
+        // Crear selector para excluir elementos protegidos
+        const selector = 'body *:not(#accessibility-widget, #accessibility-widget *, .bntNextPrev-container, .bntNextPrev-container *, .headerOpc, .headerOpc *)';
+        var elements = document.querySelectorAll(selector);
+        
         elements.forEach(function(element) {
             if (isSaturationOn) {
-                element.classList.add('desaturated');
+                // Aplicar filtro solo si no es un elemento protegido
+                if (!element.closest('.bntNextPrev-container') && !element.closest('.headerOpc')) {
+                    element.style.filter = 'saturate(0.5)';
+                }
             } else {
-                element.classList.remove('desaturated');
+                element.style.filter = '';
             }
         });
     }
@@ -610,26 +702,42 @@
         });
     }
 
+    // Función modificada para negativo (protege elementos específicos)
     function toggleNegative() {
         isNegativeOn = !isNegativeOn;
-        var elements = document.querySelectorAll('body *:not(#accessibility-widget, #accessibility-widget *)');
+        
+        // Crear selector para excluir elementos protegidos
+        const selector = 'body *:not(#accessibility-widget, #accessibility-widget *, .bntNextPrev-container, .bntNextPrev-container *, .headerOpc, .headerOpc *)';
+        var elements = document.querySelectorAll(selector);
+        
         elements.forEach(function(element) {
             if (isNegativeOn) {
-                element.classList.add('negative');
+                // Aplicar filtro solo si no es un elemento protegido
+                if (!element.closest('.bntNextPrev-container') && !element.closest('.headerOpc')) {
+                    element.style.filter = 'invert(100%)';
+                }
             } else {
-                element.classList.remove('negative');
+                element.style.filter = '';
             }
         });
     }
 
+    // Función modificada para tonos de gris (protege elementos específicos)
     function toggleGrayscale() {
         isGrayscaleOn = !isGrayscaleOn;
-        var elements = document.querySelectorAll('body *:not(#accessibility-widget, #accessibility-widget *)');
+        
+        // Crear selector para excluir elementos protegidos
+        const selector = 'body *:not(#accessibility-widget, #accessibility-widget *, .bntNextPrev-container, .bntNextPrev-container *, .headerOpc, .headerOpc *)';
+        var elements = document.querySelectorAll(selector);
+        
         elements.forEach(function(element) {
             if (isGrayscaleOn) {
-                element.classList.add('grayscale');
+                // Aplicar filtro solo si no es un elemento protegido
+                if (!element.closest('.bntNextPrev-container') && !element.closest('.headerOpc')) {
+                    element.style.filter = 'grayscale(100%)';
+                }
             } else {
-                element.classList.remove('grayscale');
+                element.style.filter = '';
             }
         });
     }
@@ -805,9 +913,8 @@
         videos.forEach(function(video) {
             if (areSoundsStopped) {
                 video.pause();
-            } else {
-                video.play();
             }
+            // No reproducir automáticamente al desactivar
         });
     }
 
@@ -823,6 +930,7 @@
         });
     }
 
+    // Función resetAll mejorada
     function resetAll() {
         // Restablecer estilos y clases
         var elements = document.querySelectorAll('body *:not(#accessibility-widget, #accessibility-widget *, iframe, iframe *)');
@@ -835,8 +943,8 @@
             element.style.fontFamily = '';
     
             element.classList.remove(
-                'high-contrast', 'low-contrast', 'negative', 'grayscale', 'legible-font',
-                'desaturated', 'focus-mode', 'highlighted-link', 'highlighted-heading'
+                'high-contrast', 'low-contrast', 'legible-font',
+                'focus-mode', 'highlighted-link', 'highlighted-heading'
             );
         });
     
@@ -847,12 +955,7 @@
             element.style.transition = '';
         });
     
-        // Restablecer multimedia
-        var videos = document.querySelectorAll('body video, body audio');
-        videos.forEach(function(video) {
-            video.play();
-        });
-    
+        // Mostrar imágenes
         var images = document.querySelectorAll('body img');
         images.forEach(function(image) {
             image.style.display = '';
@@ -895,5 +998,13 @@
         currentFontSizeMultiplier = 1;
         fontSizeSteps = 0;
         originalFontSizes.clear();
+        mediaElementsState = [];
+        
+        // Restaurar botón de animaciones
+        var animationButton = document.querySelector('.fa-pause, .fa-play').parentElement;
+        if (animationButton) {
+            animationButton.querySelector('span').innerText = 'Detener Animaciones';
+            animationButton.querySelector('.fa-play').className = 'fas fa-pause';
+        }
     }
 })();
