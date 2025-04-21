@@ -47,50 +47,114 @@
 .category-options {
     padding: 0.625rem;
     display: none;
-    flex-wrap: wrap;
 }
 
-.category-options button {
-    display: inline-block;
-    width: 48%;
-    margin: 1%;
-    padding: 0.625rem;
-    cursor: pointer;
+/* Contenedor de opciones */
+.option-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.text-container {
+    display: flex;
+    align-items: center;
+}
+
+.text-container i {
+    margin-right: 10px;
+    color: #007BFF;
+    font-size: 16px;
+    width: 20px;
     text-align: center;
-    border: 0.0625rem solid #DDD;
-    border-radius: 0.3125rem;
-    background-color: #FFF;
-    box-shadow: 0 0.125rem 0.3125rem rgba(0, 0, 0, 0.1);
+}
+
+/* Estilos para los botones de acción (no toggle) */
+.action-button {
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
     transition: all 0.2s ease;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
 }
 
-.category-options button:hover {
-    background-color: #F5F5F5;
-    transform: translateY(-0.125rem);
-    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.15);
+.action-button:hover {
+    background-color: #0069d9;
+    transform: scale(1.1);
 }
 
-/* Estilos para botones seleccionados */
-.category-options button.selected {
-    background-color: #007BFF !important;
-    color: white !important;
-    border-color: #007BFF !important;
+/* Estilos para el switch */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 24px;
 }
 
-.category-options button.selected i,
-.category-options button.selected span {
-    color: white !important;
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+}
+
+input:checked + .slider {
+    background-color: #007BFF;
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px #007BFF;
+}
+
+input:checked + .slider:before {
+    transform: translateX(26px);
+}
+
+/* Slider redondeado */
+.slider.round {
+    border-radius: 24px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
 }
 
 /* Estilos para los botones de control */
 .control-buttons {
     display: flex;
-    justify-content: space-between;
-    padding: 0 0.625rem;
+    flex-direction: column;
+    gap: 0.625rem;
     margin: 0.625rem 0;
+    padding: 0 0.625rem;
 }
 
 .control-buttons button {
@@ -102,11 +166,6 @@
     padding: 0.5rem;
     border-radius: 0.3125rem;
     transition: all 0.2s ease;
-}
-
-.control-buttons button:hover {
-    color: #0056b3;
-    transform: scale(1.1);
 }
 
 /* Estilo para el cursor personalizado */
@@ -183,27 +242,38 @@
         width: 85% !important;
     }
     
-    .category-options {
-        justify-content: space-between;
-        padding: 0.3125rem;
+    .option-container {
+        padding: 8px 5px;
     }
     
-    .category-options button {
-        width: 48% !important;
-        margin: 2%;
-        padding: 0.375rem 0.1875rem;
-        font-size: 0.6875rem;
+    .text-container span {
+        font-size: 14px;
     }
     
-    .category-options button i {
-        font-size: 1rem;
-        margin-bottom: 0.125rem;
+    .text-container i {
+        font-size: 14px;
     }
     
-    #accessibility-widget button {
+    .switch {
+        width: 40px;
+        height: 20px;
+    }
+    
+    .slider:before {
+        height: 14px;
+        width: 14px;
+        left: 3px;
+        bottom: 3px;
+    }
+    
+    input:checked + .slider:before {
+        transform: translateX(20px);
+    }
+    
+    /* #accessibility-widget button {
         width: 3.125rem;
         padding: 0.75rem;
-    }
+    } */
     
     #accessibility-widget button i {
         font-size: 1.625rem;
@@ -230,13 +300,28 @@
 
 /* Ajustes adicionales para pantallas muy pequeñas */
 @media (max-width: 30rem) {
-    .category-options button {
-        font-size: 0.625rem;
-        padding: 0.3125rem 0.125rem;
+    .text-container span {
+        font-size: 12px;
     }
     
-    .category-options button i {
-        font-size: 0.875rem;
+    .text-container i {
+        font-size: 12px;
+    }
+    
+    .switch {
+        width: 36px;
+        height: 18px;
+    }
+    
+    .slider:before {
+        height: 12px;
+        width: 12px;
+        left: 3px;
+        bottom: 3px;
+    }
+    
+    input:checked + .slider:before {
+        transform: translateX(18px);
     }
     
     .menu-header span,
@@ -246,8 +331,8 @@
 }
 
 @media (max-width: 22.5rem) {
-    .category-options button {
-        font-size: 0.5625rem;
+    .text-container span {
+        font-size: 11px;
     }
     
     .category-header {
